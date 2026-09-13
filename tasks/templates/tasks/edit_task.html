@@ -1,0 +1,170 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Edit Task | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <a href="{% url 'task_detail' task.id %}" class="back-link">
+            ← Back to Task
+        </a>
+
+        <h1>Edit Task</h1>
+
+        <p>Update your task details.</p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="title">Task Title</label>
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="{{ task.title }}"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="description">Description</label>
+
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+                required
+            >{{ task.description }}</textarea>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label for="deadline">Deadline</label>
+
+                <input
+                    type="datetime-local"
+                    id="deadline"
+                    name="deadline"
+                    value="{{ task.deadline|date:'Y-m-d\TH:i' }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="status">Status</label>
+
+                <select id="status" name="status" required>
+
+                    {% for value, label in status_choices %}
+
+                        <option
+                            value="{{ value }}"
+                            {% if task.status == value %}selected{% endif %}
+                        >
+                            {{ label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label for="priority">Priority</label>
+
+                <select id="priority" name="priority" required>
+
+                    {% for priority in priorities %}
+
+                        <option
+                            value="{{ priority.id }}"
+                            {% if task.priority.id == priority.id %}selected{% endif %}
+                        >
+                            {{ priority.name|title }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="category">Category</label>
+
+                <select id="category" name="category" required>
+
+                    {% for category in categories %}
+
+                        <option
+                            value="{{ category.id }}"
+                            {% if task.category.id == category.id %}selected{% endif %}
+                        >
+                            {{ category.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'task_detail' task.id %}"
+                class="cancel-button"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

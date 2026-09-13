@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Hangarin{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- =========================
+         Desktop Sidebar
+         ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                H
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    Hangarin
+                </div>
+
+                <div class="brand-subtitle">
+                    Task Manager
+                </div>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{% url 'tasks_list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">✓</span>
+                <span>Tasks</span>
+            </a>
+
+
+            <a
+                href="{% url 'categories_list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">▦</span>
+                <span>Categories</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="/admin/"
+                class="nav-link"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Admin</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         Main Content
+         ========================= -->
+
+    <main class="main-content">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =========================
+         Mobile Bottom Navigation
+         ========================= -->
+
+    <nav class="bottom-nav">
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">⌂</span>
+            Home
+        </a>
+
+
+        <a
+            href="{% url 'tasks_list' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">✓</span>
+            Tasks
+        </a>
+
+
+        <a
+            href="{% url 'categories_list' %}"
+            class="nav-item"
+        >
+            <span class="nav-icon">▦</span>
+            Categories
+        </a>
+
+
+        <a
+            href="/admin/"
+            class="nav-item"
+        >
+            <span class="nav-icon">⚙</span>
+            More
+        </a>
+
+    </nav>
+
+</div>
+
+</body>
+
+</html>

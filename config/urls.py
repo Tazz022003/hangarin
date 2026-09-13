@@ -16,7 +16,34 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from tasks.views import (
+    dashboard, 
+    task_detail,
+    add_task, 
+    tasks_list, 
+    edit_task, 
+    delete_task, 
+    add_subtask,  
+    update_subtask_status, 
+    edit_subtask,
+    delete_subtask,
+    add_note,
+    categories_list,
+
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", dashboard, name="dashboard"),
+    path("tasks/add/", add_task, name="add_task"),
+    path("tasks/", tasks_list, name="tasks_list"),
+    path("categories/", categories_list, name="categories_list"),
+    path("tasks/<int:task_id>/edit/", edit_task, name="edit_task"),
+    path("tasks/<int:task_id>/delete/", delete_task, name="delete_task"),
+    path( "tasks/<int:task_id>/subtasks/add/", add_subtask, name="add_subtask"),
+    path( "tasks/<int:task_id>/notes/add/", add_note, name="add_note"),
+    path( "subtasks/<int:subtask_id>/status/", update_subtask_status, name="update_subtask_status"),
+    path( "subtasks/<int:subtask_id>/edit/", edit_subtask, name="edit_subtask"),
+    path( "substasks/<int:subtask_id>/delete", delete_subtask, name="delete_subtask"),
+    path("tasks/<int:task_id>/", task_detail, name="task_detail"),
 ]

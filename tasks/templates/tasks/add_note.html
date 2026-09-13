@@ -1,0 +1,76 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Add Note | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <a
+            href="{% url 'task_detail' task.id %}"
+            class="back-link"
+        >
+            ← Back to Task
+        </a>
+
+        <h1>Add Note</h1>
+
+        <p>
+            Add a note to
+            <strong>{{ task.title }}</strong>.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="form-group">
+
+            <label for="content">
+                Note
+            </label>
+
+            <textarea
+                id="content"
+                name="content"
+                rows="7"
+                placeholder="Write something about this task..."
+                required
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'task_detail' task.id %}"
+                class="cancel-button"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                Add Note
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

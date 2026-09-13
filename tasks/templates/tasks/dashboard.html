@@ -1,0 +1,94 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Dashboard | Hangarin{% endblock %}
+
+{% block content %}
+
+<header class="dashboard-header">
+    <div class="greeting">
+        <h1>Good day</h1>
+        <p>Let's get things done.</p>
+    </div>
+</header>
+
+
+<section class="stats">
+
+    <div class="stat-card">
+        <div class="stat-label">Total Tasks</div>
+        <div class="stat-number">{{ total_tasks }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Pending</div>
+        <div class="stat-number">{{ pending_tasks }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-number">{{ completed_tasks }}</div>
+    </div>
+
+</section>
+
+
+<section>
+
+    <div class="section-header">
+        <h2>Today's Tasks</h2>
+    </div>
+
+    <div class="task-list">
+
+        {% for task in tasks %}
+
+        <a href="{% url 'task_detail' task.id %}" class="task-card task-link">
+
+            <h3 class="task-title">
+                {{ task.title }}
+            </h3>
+
+            <div class="task-meta">
+
+                <span>{{ task.status }}</span>
+
+                <span>•</span>
+
+                <span>{{ task.category.name }}</span>
+
+                <span class="badge badge-{{ task.priority.name|lower }}">
+                    {{ task.priority.name|title }}
+                </span>
+
+                <span>•</span>
+
+                <span>
+                    {{ task.deadline|date:"M d, Y · g:i A" }}
+                </span>
+
+            </div>
+
+        </a>
+
+        {% empty %}
+
+        <div class="task-card">
+            <p>No tasks yet.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<button
+    class="fab"
+    type="button"
+    onclick="window.location.href='{% url 'add_task' %}'"
+    aria-label="Add task"
+>
+    +
+</button>
+
+{% endblock %}

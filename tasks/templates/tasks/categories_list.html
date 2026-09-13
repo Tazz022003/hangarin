@@ -1,0 +1,59 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Categories | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Categories</h1>
+        <p>Organize your tasks by category.</p>
+    </div>
+
+</div>
+
+
+<section class="category-grid">
+
+    {% for category in categories %}
+
+    <a
+        href="{% url 'tasks_list' %}?category={{ category.id }}"
+        class="category-card"
+    >
+
+        <div class="category-icon">
+            ▦
+        </div>
+
+        <div class="category-info">
+
+            <h2>
+                {{ category.name }}
+            </h2>
+
+            <p>
+                View tasks in this category
+            </p>
+
+        </div>
+
+        <span class="category-arrow">
+            →
+        </span>
+
+    </a>
+
+    {% empty %}
+
+    <div class="empty-card">
+        <h3>No categories yet</h3>
+        <p>Add categories through the Admin panel.</p>
+    </div>
+
+    {% endfor %}
+
+</section>
+
+{% endblock %}

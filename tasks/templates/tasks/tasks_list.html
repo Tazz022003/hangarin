@@ -1,0 +1,110 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Tasks | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>All Tasks</h1>
+        <p>Manage everything you need to get done.</p>
+    </div>
+
+    <a href="{% url 'add_task' %}" class="add-task-button">
+        + Add Task
+    </a>
+</div>
+
+<div class="task-filters">
+
+    <a
+        href="{% url 'tasks_list' %}"
+        class="filter-button {% if not current_status %}active{% endif %}"
+    >
+        All
+    </a>
+
+    <a
+        href="{% url 'tasks_list' %}?status=Pending"
+        class="filter-button {% if current_status == 'Pending' %}active{% endif %}"
+    >
+        Pending
+    </a>
+
+    <a
+        href="{% url 'tasks_list' %}?status=In%20Progress"
+        class="filter-button {% if current_status == 'In Progress' %}active{% endif %}"
+    >
+        In Progress
+    </a>
+
+    <a
+        href="{% url 'tasks_list' %}?status=Completed"
+        class="filter-button {% if current_status == 'Completed' %}active{% endif %}"
+    >
+        Completed
+    </a>
+
+</div>
+
+
+<section class="task-list-page">
+
+    {% for task in tasks %}
+
+    <a href="{% url 'task_detail' task.id %}" class="task-card task-link">
+
+        <div class="task-card-top">
+
+            <div>
+                <h3 class="task-title">
+                    {{ task.title }}
+                </h3>
+
+                <p class="task-description">
+                    {{ task.description }}
+                </p>
+            </div>
+
+            <span class="badge badge-{{ task.priority.name|lower }}">
+                {{ task.priority.name|title }}
+            </span>
+
+        </div>
+
+        <div class="task-meta">
+
+            <span class="status-badge">
+                {{ task.status }}
+            </span>
+
+            <span>•</span>
+
+            <span>{{ task.category.name }}</span>
+
+            <span>•</span>
+
+            <span>
+                {{ task.deadline|date:"M d, Y · g:i A" }}
+            </span>
+
+        </div>
+
+    </a>
+
+    {% empty %}
+
+    <div class="empty-card">
+        <h3>No tasks yet</h3>
+        <p>Create your first task to get started.</p>
+
+        <a href="{% url 'add_task' %}" class="submit-button">
+            Add Task
+        </a>
+    </div>
+
+    {% endfor %}
+
+</section>
+
+{% endblock %}

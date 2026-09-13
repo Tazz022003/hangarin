@@ -1,0 +1,240 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{{ task.title }} | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="task-detail">
+
+    <a href="/" class="back-link">
+        ← Back to Tasks
+    </a>
+
+
+    <div class="detail-card">
+
+        <div class="detail-header">
+
+            <div>
+
+                <span class="badge badge-{{ task.priority.name|lower }}">
+                    {{ task.priority.name|title }}
+                </span>
+
+                <h1>{{ task.title }}</h1>
+
+            </div>
+
+
+            <div class="detail-actions">
+
+                <span class="status-badge">
+                    {{ task.status }}
+                </span>
+
+                <a
+                    href="{% url 'edit_task' task.id %}"
+                    class="edit-button"
+                >
+                    Edit
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-info">
+
+            <div>
+
+                <span class="info-label">
+                    Category
+                </span>
+
+                <strong>
+                    {{ task.category.name }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span class="info-label">
+                    Deadline
+                </span>
+
+                <strong>
+                    {{ task.deadline|date:"M d, Y · g:i A" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="description">
+
+            <h2>Description</h2>
+
+            <p>
+                {{ task.description }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <section class="detail-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <h2>SubTasks</h2>
+
+                <span>
+                    {{ subtasks|length }}
+                </span>
+
+            </div>
+
+
+            <a
+                href="{% url 'add_subtask' task.id %}"
+                class="add-subtask-button"
+            >
+                + Add SubTask
+            </a>
+
+        </div>
+
+
+        {% for subtask in subtasks %}
+
+        <div class="subtask-card">
+
+            <div>
+
+                <strong>
+                    {{ subtask.title }}
+                </strong>
+
+                <small>
+                    {{ subtask.status }}
+                </small>
+
+            </div>
+
+
+            <div class="subtask-actions">
+
+                <a
+                    href="{% url 'edit_subtask' subtask.id %}"
+                    class="subtask-edit-button"
+                >
+                    Edit
+                </a>
+
+
+                <a
+                    href="{% url 'delete_subtask' subtask.id %}"
+                    class="subtask-delete-button"
+                >
+                    Delete
+                </a>
+
+
+                <form
+                    method="POST"
+                    action="{% url 'update_subtask_status' subtask.id %}"
+                    class="subtask-status-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        name="status"
+                        value="{% if subtask.status == 'Completed' %}Pending{% else %}Completed{% endif %}"
+                        class="check-circle"
+                        aria-label="Update SubTask status"
+                    >
+
+                        {% if subtask.status == "Completed" %}
+                            ✓
+                        {% else %}
+                            ○
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-card">
+            No subtasks yet.
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <section class="detail-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <h2>Notes</h2>
+
+                <span>
+                  {{ notes|length }}
+                </span>
+
+            </div>
+
+            <a
+                href="{% url 'add_note' task.id %}" 
+                class="add-subtask-button" >
+                + Add Note
+             </a>
+
+       </div>
+
+
+        {% for note in notes %}
+
+        <div class="note-card">
+
+            <p>
+                {{ note.content }}
+            </p>
+
+            <small>
+                {{ note.created_at|date:"M d, Y · g:i A" }}
+            </small>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-card">
+            No notes yet.
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}
