@@ -1,11 +1,11 @@
 from datetime import datetime
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .models import Task, Category, Priority, SubTask, Note
 
-
+@login_required
 def dashboard(request):
     tasks = Task.objects.all().order_by("deadline")
 

@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from accounts.views import UserLoginView
 from tasks.views import (
     dashboard, 
     task_detail,
@@ -34,6 +35,7 @@ from tasks.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("login/", UserLoginView.as_view(), name="login"),
     path("", dashboard, name="dashboard"),
     path("tasks/add/", add_task, name="add_task"),
     path("tasks/", tasks_list, name="tasks_list"),
