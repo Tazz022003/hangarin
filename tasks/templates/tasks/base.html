@@ -72,18 +72,19 @@
         </nav>
 
 
-        <div class="sidebar-footer">
-
-            <a
-                href="/admin/"
-                class="nav-link"
-            >
+       <div class="sidebar-footer">
+            <a href="/admin/" class="nav-link">
                 <span class="nav-icon">⚙</span>
                 <span>Admin</span>
             </a>
 
-        </div>
-
+            <form method="POST" action="{% url 'logout' %}">
+                 {% csrf_token %}
+                 <button type="submit" class="nav-link logout-button">
+                     <span class="nav-icon">↪</span>
+                     <span>Logout</span>
+                </button>
+            </form>
     </aside>
 
 
