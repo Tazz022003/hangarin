@@ -1,0 +1,214 @@
+{% load socialaccount %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Hangarin</title>
+
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- Brand -->
+        <div class="login-brand">
+
+            <div class="brand-icon">
+                H
+            </div>
+
+            <h1>Hangarin</h1>
+
+            <p>Task Manager</p>
+
+        </div>
+
+
+        <!-- Social Login -->
+        <div class="social-login">
+
+            <!-- Google -->
+            <a
+                href="{% provider_login_url 'google' %}"
+                class="social-button"
+            >
+
+                <svg
+                    class="social-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        fill="#4285F4"
+                        d="M21.35 12.27c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42z"
+                    />
+
+                    <path
+                        fill="#34A853"
+                        d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.52A9.75 9.75 0 0 0 12 21.5z"
+                    />
+
+                    <path
+                        fill="#FBBC05"
+                        d="M6.54 13.58A5.86 5.86 0 0 1 6.23 12c0-.55.1-1.08.31-1.58V7.9H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.05 4.1l3.24-2.52z"
+                    />
+
+                    <path
+                        fill="#EA4335"
+                        d="M12 6.39c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.45 14.63 2.5 12 2.5a9.75 9.75 0 0 0-8.7 5.4l3.24 2.52C7.31 8.11 9.46 6.39 12 6.39z"
+                    />
+                </svg>
+
+                <span>Continue with Google</span>
+
+            </a>
+
+
+            <!-- GitHub -->
+            <a
+                href="{% provider_login_url 'github' %}"
+                class="social-button"
+            >
+
+                <svg
+                    class="social-icon github-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        fill="currentColor"
+                        d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.84c.85 0 1.7.11 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12C22 6.48 17.52 2 12 2z"
+                    />
+                </svg>
+
+                <span>Continue with GitHub</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- Divider -->
+        <div class="login-divider">
+            <span>or</span>
+        </div>
+
+
+        <!-- Username / Email Login -->
+        <form method="POST" action="{% url 'account_login' %}">
+
+            {% csrf_token %}
+
+
+            <!-- Username / Email -->
+            <div class="form-group">
+
+                <label for="id_login">
+                    Username or Email
+                </label>
+
+                <input
+                    type="text"
+                    name="login"
+                    id="id_login"
+                    placeholder="Enter your username or email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="form-group">
+
+                <label for="id_password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    id="id_password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Error -->
+            {% if form.non_field_errors %}
+
+                <div class="login-error">
+
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- Login Options -->
+            <div class="login-options">
+
+                <label class="remember-me">
+
+                    <input
+                        type="checkbox"
+                        name="remember"
+                    >
+
+                    <span>Remember me</span>
+
+                </label>
+
+
+                <a href="{% url 'account_reset_password' %}">
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <!-- Login Button -->
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                Log In
+            </button>
+
+        </form>
+
+
+        <!-- Sign Up -->
+        <div class="login-footer">
+
+            <p>
+                Don't have an account?
+
+                <a href="{% url 'account_signup' %}">
+                    Sign Up
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -15,9 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.views.generic import RedirectView
 from django.contrib.auth.views import LogoutView
-from accounts.views import UserLoginView
+from accounts.views import signup
 from tasks.views import (
     dashboard, 
     task_detail,
@@ -36,7 +37,9 @@ from tasks.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("login/", UserLoginView.as_view(), name="login"),
+    path( "login/", RedirectView.as_view( pattern_name="account_login", query_string=True ), name="login" ),
+    path("accounts/", include("allauth.urls")),
+    path("signup/",signup, name="signup" ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", dashboard, name="dashboard"),
     path("tasks/add/", add_task, name="add_task"),

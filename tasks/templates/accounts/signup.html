@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | Hangarin</title>
+
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-brand">
+            <div class="brand-icon">H</div>
+            <h1>Create Account</h1>
+            <p>Join Hangarin Task Manager</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="login-error">
+                    Please correct the errors below.
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password2">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="submit-button">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>
+                Already have an account?
+                <a href="{% url 'login' %}">Log In</a>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Created | Hangarin</title>
+
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-brand">
+            <div class="brand-icon">H</div>
+            <h1>Account Created!</h1>
+            <p>Your Hangarin account is ready.</p>
+        </div>
+
+        <a href="{% url 'login' %}" class="submit-button">
+            Go to Login
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
