@@ -72,19 +72,26 @@
         </nav>
 
 
-       <div class="sidebar-footer">
+        <div class="sidebar-footer">
+
             <a href="/admin/" class="nav-link">
                 <span class="nav-icon">⚙</span>
                 <span>Admin</span>
             </a>
 
+
             <form method="POST" action="{% url 'logout' %}">
-                 {% csrf_token %}
-                 <button type="submit" class="nav-link logout-button">
-                     <span class="nav-icon">↪</span>
-                     <span>Logout</span>
+                {% csrf_token %}
+
+                <button type="submit" class="nav-link logout-button">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
                 </button>
+
             </form>
+
+        </div>
+
     </aside>
 
 
@@ -133,13 +140,22 @@
         </a>
 
 
-        <a
-            href="/admin/"
-            class="nav-item"
+        <form
+            method="POST"
+            action="{% url 'logout' %}"
+            class="mobile-logout-form"
         >
-            <span class="nav-icon">⚙</span>
-            More
-        </a>
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="nav-item mobile-logout-button"
+            >
+                <span class="nav-icon">↪</span>
+                Logout
+            </button>
+
+        </form>
 
     </nav>
 
