@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LogoutView
+
 from accounts.views import signup
 from tasks.views import (
     dashboard, 
@@ -32,6 +33,7 @@ from tasks.views import (
     delete_subtask,
     add_note,
     categories_list,
+    profile,
 
 )
 
@@ -42,6 +44,7 @@ urlpatterns = [
     path("signup/",signup, name="signup" ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", dashboard, name="dashboard"),
+    path("profile/", profile, name="profile"),
     path("tasks/add/", add_task, name="add_task"),
     path("tasks/", tasks_list, name="tasks_list"),
     path("categories/", categories_list, name="categories_list"),

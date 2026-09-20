@@ -4,91 +4,395 @@
 
 {% block content %}
 
-<header class="dashboard-header">
-    <div class="greeting">
-        <h1>Good day</h1>
-        <p>Let's get things done.</p>
-    </div>
-</header>
+<div class="dashboard-page">
+
+    <!-- Dashboard Top -->
+    <div class="dashboard-topbar">
+
+        <div class="dashboard-heading">
+            <h1>Good day, {{ request.user.username }}!</h1>
+            <p>Here's what's happening with your tasks.</p>
+        </div>
 
 
-<section class="stats">
+        <!-- Profile Dropdown -->
+        <details class="profile-dropdown">
 
-    <div class="stat-card">
-        <div class="stat-label">Total Tasks</div>
-        <div class="stat-number">{{ total_tasks }}</div>
-    </div>
+            <summary class="profile-trigger">
 
-    <div class="stat-card">
-        <div class="stat-label">Pending</div>
-        <div class="stat-number">{{ pending_tasks }}</div>
-    </div>
+                <div class="profile-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Completed</div>
-        <div class="stat-number">{{ completed_tasks }}</div>
-    </div>
+                <div class="profile-trigger-info">
+                    <strong>{{ request.user.username }}</strong>
 
-</section>
+                    {% if request.user.email %}
+                        <span>{{ request.user.email }}</span>
+                    {% endif %}
+                </div>
 
-
-<section>
-
-    <div class="section-header">
-        <h2>Today's Tasks</h2>
-    </div>
-
-    <div class="task-list">
-
-        {% for task in tasks %}
-
-        <a href="{% url 'task_detail' task.id %}" class="task-card task-link">
-
-            <h3 class="task-title">
-                {{ task.title }}
-            </h3>
-
-            <div class="task-meta">
-
-                <span>{{ task.status }}</span>
-
-                <span>•</span>
-
-                <span>{{ task.category.name }}</span>
-
-                <span class="badge badge-{{ task.priority.name|lower }}">
-                    {{ task.priority.name|title }}
+                <span class="profile-chevron">
+                    ▾
                 </span>
 
-                <span>•</span>
+            </summary>
 
-                <span>
-                    {{ task.deadline|date:"M d, Y · g:i A" }}
-                </span>
+
+            <div class="profile-menu">
+
+                <!-- Profile Header -->
+                <div class="profile-menu-header">
+
+                    <div class="profile-avatar profile-avatar-large">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div>
+                        <strong>{{ request.user.username }}</strong>
+
+                        {% if request.user.email %}
+                            <span>{{ request.user.email }}</span>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <!-- Profile Links -->
+                <div class="profile-menu-links">
+
+                    <a href="{% url 'profile' %}" class="profile-menu-item">
+
+                        <span class="profile-menu-icon">
+                            ♙
+                        </span>
+
+                        <span>
+                            My Profile
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="profile-menu-item">
+
+                        <span class="profile-menu-icon">
+                            ⚙
+                        </span>
+
+                        <span>
+                            Account Settings
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Logout -->
+                <div class="profile-menu-footer">
+
+                    <form method="POST" action="{% url 'logout' %}">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="profile-menu-item logout-menu-item">
+
+                            <span class="profile-menu-icon">
+                                ↪
+                            </span>
+
+                            <span>
+                                Logout
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
-        </a>
-
-        {% empty %}
-
-        <div class="task-card">
-            <p>No tasks yet.</p>
-        </div>
-
-        {% endfor %}
+        </details>
 
     </div>
 
-</section>
 
-<button
-    class="fab"
-    type="button"
-    onclick="window.location.href='{% url 'add_task' %}'"
-    aria-label="Add task"
->
-    +
-</button>
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+
+        <!-- Total Tasks -->
+        <div class="summary-card summary-total">
+
+            <div class="summary-icon">
+                ✓
+            </div>
+
+            <div class="summary-content">
+                <span>Total Tasks</span>
+                <strong>{{ total_tasks }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Completed -->
+        <div class="summary-card summary-completed">
+
+            <div class="summary-icon">
+                ✓
+            </div>
+
+            <div class="summary-content">
+                <span>Completed</span>
+                <strong>{{ completed_tasks }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Pending -->
+        <div class="summary-card summary-pending">
+
+            <div class="summary-icon">
+                ◷
+            </div>
+
+            <div class="summary-content">
+                <span>Pending</span>
+                <strong>{{ pending_tasks }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Categories -->
+        <div class="summary-card summary-categories">
+
+            <div class="summary-icon">
+                ▦
+            </div>
+
+            <div class="summary-content">
+                <span>Categories</span>
+                <strong>{{ categories|length }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-grid">
+
+
+        <!-- Recent Tasks -->
+        <section class="dashboard-panel recent-tasks-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Recent Tasks</h2>
+                    <p>Your upcoming tasks and deadlines.</p>
+                </div>
+
+
+                <div class="panel-actions">
+
+                    <a href="{% url 'add_task' %}" class="panel-add-button">
+                        + Add Task
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="task-list">
+
+                {% for task in tasks|slice:":5" %}
+
+                <a href="{% url 'task_detail' task.id %}"
+                   class="dashboard-task">
+
+                    <div class="task-main">
+
+                        <div class="task-check">
+
+                            {% if task.status == "Completed" %}
+                                ✓
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="task-info">
+
+                            <h3>{{ task.title }}</h3>
+
+                            <div class="task-meta">
+
+                                <span class="category-badge">
+                                    {{ task.category.name }}
+                                </span>
+
+                                <span class="task-date">
+                                    {{ task.deadline|date:"M d, Y" }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task-right">
+
+                        {% if task.status == "Pending" %}
+
+                            <span class="status-badge status-pending">
+                                Pending
+                            </span>
+
+                        {% elif task.status == "In Progress" %}
+
+                            <span class="status-badge status-inprogress">
+                                In Progress
+                            </span>
+
+                        {% elif task.status == "Completed" %}
+
+                            <span class="status-badge status-completed">
+                                Completed
+                            </span>
+
+                        {% endif %}
+
+                        <span class="task-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+                {% empty %}
+
+                <div class="empty-dashboard">
+
+                    <h3>No tasks yet</h3>
+
+                    <p>
+                        Create your first task to get started.
+                    </p>
+
+                    <a href="{% url 'add_task' %}"
+                       class="add-task-button">
+                        + Add Task
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- Right Column -->
+        <div class="dashboard-side">
+
+
+            <!-- Motivation -->
+            <section class="dashboard-panel motivation-card">
+
+                <div class="motivation-icon">
+                    ✦
+                </div>
+
+                <h2>Keep going!</h2>
+
+                <p>
+                    Small steps every day lead to bigger goals.
+                </p>
+
+            </section>
+
+
+            <!-- Upcoming -->
+            <section class="dashboard-panel upcoming-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Upcoming</h2>
+                        <p>Tasks with approaching deadlines.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="upcoming-list">
+
+                    {% for task in tasks|slice:":4" %}
+
+                    <a href="{% url 'task_detail' task.id %}"
+                       class="upcoming-item">
+
+                        <div class="upcoming-date">
+
+                            <span>
+                                {{ task.deadline|date:"M" }}
+                            </span>
+
+                            <strong>
+                                {{ task.deadline|date:"d" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="upcoming-info">
+
+                            <h3>{{ task.title }}</h3>
+
+                            <div>
+
+                                <span class="category-badge">
+                                    {{ task.category.name }}
+                                </span>
+
+                                <span class="upcoming-time">
+                                    {{ task.deadline|date:"g:i A" }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    {% empty %}
+
+                    <p class="empty-message">
+                        No upcoming tasks.
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

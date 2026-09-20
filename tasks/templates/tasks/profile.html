@@ -1,0 +1,58 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Profile | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Profile</h1>
+        <p>Manage your Hangarin account.</p>
+    </div>
+</div>
+
+<div class="profile-card">
+
+    <div class="profile-avatar">
+        {{ request.user.username|first|upper }}
+    </div>
+
+    <div class="profile-info">
+        <h2>{{ request.user.username }}</h2>
+
+        <p>{{ request.user.email }}</p>
+    </div>
+
+</div>
+
+<div class="profile-section">
+
+    <h3>Account</h3>
+
+    <div class="profile-row">
+        <span>Username</span>
+        <strong>{{ request.user.username }}</strong>
+    </div>
+
+    <div class="profile-row">
+        <span>Email</span>
+        <strong>{{ request.user.email|default:"No email available" }}</strong>
+    </div>
+
+</div>
+
+<div class="profile-section logout-section">
+
+    <h3>Session</h3>
+
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+
+        <button type="submit" class="logout-profile-button">
+            Logout
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

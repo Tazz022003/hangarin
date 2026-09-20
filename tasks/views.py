@@ -279,3 +279,6 @@ def add_note(request, task_id):
         "tasks/add_note.html",
         context,
     )
+
+def profile(request):
+    return render(request, "tasks/profile.html")
