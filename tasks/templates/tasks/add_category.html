@@ -1,0 +1,60 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Add Category | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <a href="{% url 'categories_list' %}" class="back-link">
+            ← Back to Categories
+        </a>
+
+        <h1>Add Category</h1>
+
+        <p>Create a new category to organize your tasks.</p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="name">Category Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g. Health, Travel"
+                required
+            >
+
+        </div>
+
+        <div class="form-actions">
+
+            <a href="{% url 'categories_list' %}" class="cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit" class="submit-button">
+                Add Category
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

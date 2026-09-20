@@ -21,6 +21,9 @@ from tasks.views import (
     TaskListView,
     TaskUpdateView,
     UpdateSubTaskStatusView,
+    CategoryCreateView, 
+    CategoryUpdateView, 
+    CategoryDeleteView
 )
 
 urlpatterns = [
@@ -68,4 +71,13 @@ urlpatterns = [
     ),
 
     path("tasks/<int:task_id>/notes/add/", NoteCreateView.as_view(), name="add_note"),
+
+    # Add to the imports at the top:
+# from tasks.views import CategoryCreateView, CategoryUpdateView, CategoryDeleteView
+
+# Add these to urlpatterns, near the existing categories_list path:
+
+    path("categories/add/", CategoryCreateView.as_view(), name="add_category"),
+    path("categories/<int:pk>/edit/", CategoryUpdateView.as_view(), name="edit_category"),
+    path("categories/<int:pk>/delete/", CategoryDeleteView.as_view(), name="delete_category"),
 ]

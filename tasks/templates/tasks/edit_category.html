@@ -1,0 +1,60 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Edit Category | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <a href="{% url 'categories_list' %}" class="back-link">
+            ← Back to Categories
+        </a>
+
+        <h1>Edit Category</h1>
+
+        <p>Update this category's name.</p>
+
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="name">Category Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ category.name }}"
+                required
+            >
+
+        </div>
+
+        <div class="form-actions">
+
+            <a href="{% url 'categories_list' %}" class="cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit" class="submit-button">
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

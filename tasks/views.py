@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import NoteForm, SubTaskForm, TaskForm
+from .forms import CategoryForm, NoteForm, SubTaskForm, TaskForm
 from .models import Category, Note, Priority, SubTask, Task
 
 
@@ -138,10 +138,41 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 # Category
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Category
+# ---------------------------------------------------------------------------
+
 class CategoriesListView(LoginRequiredMixin, ListView):
     model = Category
     context_object_name = "categories"
     template_name = "tasks/categories_list.html"
+
+
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "tasks/add_category.html"
+    success_url = reverse_lazy("categories_list")
+
+
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "tasks/edit_category.html"
+    context_object_name = "category"
+    success_url = reverse_lazy("categories_list")
+
+
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Category
+    template_name = "tasks/delete_category.html"
+    context_object_name = "category"
+    success_url = reverse_lazy("categories_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task_count"] = Task.objects.filter(category=self.object).count()
+        return context
 
 
 # ---------------------------------------------------------------------------

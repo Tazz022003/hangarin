@@ -1,0 +1,58 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Delete Category | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="delete-page">
+
+    <div class="delete-card">
+
+        <div class="delete-icon">
+            !
+        </div>
+
+        <h1>Delete Category?</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong>"{{ category.name }}"</strong>?
+        </p>
+
+        {% if task_count > 0 %}
+
+            <p class="delete-warning">
+                ⚠️ This category has <strong>{{ task_count }}</strong>
+                task{{ task_count|pluralize }} attached to it.
+                Deleting it will <strong>permanently delete
+                {{ task_count|pluralize:"that task,those tasks" }} too</strong> —
+                this cannot be undone.
+            </p>
+
+        {% else %}
+
+            <p class="delete-warning">
+                This action cannot be undone.
+            </p>
+
+        {% endif %}
+
+        <form method="POST" class="delete-actions">
+
+            {% csrf_token %}
+
+            <a href="{% url 'categories_list' %}" class="cancel-button">
+                Cancel
+            </a>
+
+            <button type="submit" class="delete-button">
+                Delete Category
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
