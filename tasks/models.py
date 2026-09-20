@@ -1,4 +1,3 @@
-
 from django.db import models
 
 
@@ -40,7 +39,7 @@ class Task(BaseModel):
     ]
 
     title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.TextField()  # was CharField(max_length=255) — fake.paragraph() can exceed that
     deadline = models.DateTimeField()
     status = models.CharField(
         max_length=50,
@@ -85,4 +84,3 @@ class SubTask(BaseModel):
 
     def __str__(self):
         return self.title
-# Create your models here.
