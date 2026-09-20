@@ -48,6 +48,76 @@
 </div>
 
 
+<div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin:1rem 0;">
+
+    <!-- Search form (own button) -->
+    <form method="get" style="display:flex; gap:0.5rem; flex:1; min-width:220px;">
+
+        {% if current_status %}
+            <input type="hidden" name="status" value="{{ current_status }}">
+        {% endif %}
+
+        {% if current_category %}
+            <input type="hidden" name="category" value="{{ current_category }}">
+        {% endif %}
+
+        {% if current_sort %}
+            <input type="hidden" name="sort_by" value="{{ current_sort }}">
+        {% endif %}
+
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search tasks..."
+            style="flex:1; padding:0.6rem 1rem; border-radius:8px; border:1px solid #ddd;"
+        >
+
+        <button type="submit" class="submit-button">
+            Search
+        </button>
+
+    </form>
+
+
+    <!-- Sort form (own button) -->
+    <form method="get" style="display:flex; gap:0.5rem; align-items:center;">
+
+        {% if current_status %}
+            <input type="hidden" name="status" value="{{ current_status }}">
+        {% endif %}
+
+        {% if current_category %}
+            <input type="hidden" name="category" value="{{ current_category }}">
+        {% endif %}
+
+        {% if query %}
+            <input type="hidden" name="q" value="{{ query }}">
+        {% endif %}
+
+        <label for="sort_by" style="font-weight:600;">Sort by</label>
+
+        <select
+            id="sort_by"
+            name="sort_by"
+            style="padding:0.6rem 1rem; border-radius:8px; border:1px solid #ddd;"
+        >
+            <option value="deadline" {% if current_sort == "deadline" %}selected{% endif %}>Deadline</option>
+            <option value="title" {% if current_sort == "title" %}selected{% endif %}>Title</option>
+            <option value="status" {% if current_sort == "status" %}selected{% endif %}>Status</option>
+            <option value="priority__name" {% if current_sort == "priority__name" %}selected{% endif %}>Priority</option>
+            <option value="category__name" {% if current_sort == "category__name" %}selected{% endif %}>Category</option>
+        </select>
+
+        <button type="submit" class="submit-button">
+            Sort
+        </button>
+
+    </form>
+
+</div>
+
+
 <section class="task-list-page">
 
     {% for task in tasks %}
@@ -95,8 +165,8 @@
     {% empty %}
 
     <div class="empty-card">
-        <h3>No tasks yet</h3>
-        <p>Create your first task to get started.</p>
+        <h3>No tasks found</h3>
+        <p>Try a different search or add a new task.</p>
 
         <a href="{% url 'add_task' %}" class="submit-button">
             Add Task
@@ -106,5 +176,62 @@
     {% endfor %}
 
 </section>
+
+
+{% if is_paginated %}
+
+{% comment %}
+    Every page link below repeats the current status/category/q/sort_by
+    so that navigating pages never loses the active search, sort or filter.
+{% endcomment %}
+
+<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.5rem;">
+
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+
+        {% if page_obj.number > 1 %}
+            <a href="?page=1{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">First</a>
+        {% else %}
+            <span class="filter-button" style="opacity:0.4;">First</span>
+        {% endif %}
+
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Prev</a>
+        {% else %}
+            <span class="filter-button" style="opacity:0.4;">Prev</span>
+        {% endif %}
+
+        {% for page_num in paginator.page_range %}
+
+            {% if page_num == page_obj.number %}
+                <span class="filter-button active">{{ page_num }}</span>
+
+            {% elif page_num > page_obj.number|add:"-3" and page_num < page_obj.number|add:"3" %}
+                <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">{{ page_num }}</a>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Next</a>
+        {% else %}
+            <span class="filter-button" style="opacity:0.4;">Next</span>
+        {% endif %}
+
+        {% if page_obj.number != paginator.num_pages %}
+            <a href="?page={{ paginator.num_pages }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Last</a>
+        {% else %}
+            <span class="filter-button" style="opacity:0.4;">Last</span>
+        {% endif %}
+
+    </div>
+
+    <div style="font-size:0.9rem; color:#666;">
+        Showing <strong>{{ tasks|length }}</strong> out of <strong>{{ paginator.count }}</strong> entries
+    </div>
+
+</div>
+
+{% endif %}
 
 {% endblock %}

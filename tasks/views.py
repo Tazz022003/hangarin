@@ -38,9 +38,23 @@ class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = "tasks"
     template_name = "tasks/tasks_list.html"
+    paginate_by = 5
+
+    def get_ordering(self):
+        allowed = [
+            "deadline", "-deadline",
+            "title", "-title",
+            "status", "-status",
+            "priority__name", "-priority__name",
+            "category__name", "-category__name",
+        ]
+        sort_by = self.request.GET.get("sort_by")
+        if sort_by in allowed:
+            return sort_by
+        return "deadline"
 
     def get_queryset(self):
-        qs = super().get_queryset().order_by("deadline")
+        qs = super().get_queryset()
 
         status = self.request.GET.get("status")
         category_id = self.request.GET.get("category")
@@ -56,13 +70,14 @@ class TaskListView(LoginRequiredMixin, ListView):
         if query:
             qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
 
-        return qs
+        return qs.order_by(self.get_ordering())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["current_status"] = self.request.GET.get("status")
         context["current_category"] = self.request.GET.get("category")
         context["query"] = self.request.GET.get("q", "")
+        context["current_sort"] = self.request.GET.get("sort_by", "deadline")
         return context
 
 
