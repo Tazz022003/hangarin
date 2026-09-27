@@ -30,47 +30,7 @@
 
         {% csrf_token %}
 
-
-        <div class="form-group">
-
-            <label for="title">SubTask Title</label>
-
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value="{{ subtask.title }}"
-                required
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="status">Status</label>
-
-            <select
-                id="status"
-                name="status"
-                required
-            >
-
-                {% for value, label in status_choices %}
-
-                    <option
-                        value="{{ value }}"
-                        {% if subtask.status == value %}selected{% endif %}
-                    >
-                        {{ label }}
-                    </option>
-
-                {% endfor %}
-
-            </select>
-
-        </div>
-
+        {% include 'tasks/includes/form.html' %}
 
         <div class="form-actions">
 

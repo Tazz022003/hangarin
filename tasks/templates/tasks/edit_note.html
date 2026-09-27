@@ -1,6 +1,6 @@
 {% extends "tasks/base.html" %}
 
-{% block title %}Add Note | Hangarin{% endblock %}
+{% block title %}Edit Note | Hangarin{% endblock %}
 
 {% block content %}
 
@@ -9,17 +9,17 @@
     <div>
 
         <a
-            href="{% url 'task_detail' task.id %}"
+            href="{% url 'task_detail' note.task.id %}"
             class="back-link"
         >
             ← Back to Task
         </a>
 
-        <h1>Add Note</h1>
+        <h1>Edit Note</h1>
 
         <p>
-            Add a note to
-            <strong>{{ task.title }}</strong>.
+            Update your note on
+            <strong>{{ note.task.title }}</strong>.
         </p>
 
     </div>
@@ -38,7 +38,7 @@
         <div class="form-actions">
 
             <a
-                href="{% url 'task_detail' task.id %}"
+                href="{% url 'task_detail' note.task.id %}"
                 class="cancel-button"
             >
                 Cancel
@@ -48,7 +48,7 @@
                 type="submit"
                 class="submit-button"
             >
-                Add Note
+                Save Changes
             </button>
 
         </div>

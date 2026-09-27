@@ -3,10 +3,11 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
+from django.core.paginator import Paginator
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import CategoryForm, NoteForm, SubTaskForm, TaskForm
+from .forms import CategoryForm, NoteForm, SubTaskForm, TaskForm, PriorityForm
 from .models import Category, Note, Priority, SubTask, Task
 
 
@@ -58,6 +59,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
         status = self.request.GET.get("status")
         category_id = self.request.GET.get("category")
+        priority_id = self.request.GET.get("priority")
         query = self.request.GET.get("q")
 
         valid_statuses = [value for value, label in Task.STATUS_CHOICES]
@@ -66,6 +68,9 @@ class TaskListView(LoginRequiredMixin, ListView):
 
         if category_id:
             qs = qs.filter(category_id=category_id)
+
+        if priority_id:
+            qs = qs.filter(priority_id=priority_id)
 
         if query:
             qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
@@ -76,11 +81,11 @@ class TaskListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["current_status"] = self.request.GET.get("status")
         context["current_category"] = self.request.GET.get("category")
+        context["current_priority"] = self.request.GET.get("priority")
         context["query"] = self.request.GET.get("q", "")
         context["current_sort"] = self.request.GET.get("sort_by", "deadline")
         return context
-
-
+    
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = "task"
@@ -89,10 +94,28 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["subtasks"] = self.object.subtask_set.all()
+
+        allowed_sorts = ["title", "-title", "status", "-status"]
+        subtask_sort = self.request.GET.get("subtask_sort", "title")
+        if subtask_sort not in allowed_sorts:
+            subtask_sort = "title"
+
+        subtask_query = self.request.GET.get("subtask_q", "")
+
+        subtasks_qs = self.object.subtask_set.all()
+        if subtask_query:
+            subtasks_qs = subtasks_qs.filter(title__icontains=subtask_query)
+        subtasks_qs = subtasks_qs.order_by(subtask_sort)
+
+        paginator = Paginator(subtasks_qs, 5)
+        subtasks_page = paginator.get_page(self.request.GET.get("subtask_page"))
+
+        context["subtasks"] = subtasks_page
+        context["subtask_sort"] = subtask_sort
+        context["subtask_query"] = subtask_query
+
         context["notes"] = self.object.note_set.all().order_by("-created_at")
         return context
-
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
@@ -268,6 +291,26 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("task_detail", kwargs={"task_id": self.task.id})
 
+class NoteUpdateView(LoginRequiredMixin, UpdateView):
+    model = Note
+    form_class = NoteForm
+    template_name = "tasks/edit_note.html"
+    context_object_name = "note"
+    pk_url_kwarg = "note_id"
+
+    def get_success_url(self):
+        return reverse_lazy("task_detail", kwargs={"task_id": self.object.task.id})
+
+
+class NoteDeleteView(LoginRequiredMixin, DeleteView):
+    model = Note
+    template_name = "tasks/delete_note.html"
+    context_object_name = "note"
+    pk_url_kwarg = "note_id"
+
+    def get_success_url(self):
+        return reverse_lazy("task_detail", kwargs={"task_id": self.object.task.id})
+
 
 # ---------------------------------------------------------------------------
 # Profile
@@ -275,3 +318,47 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "tasks/profile.html"
+
+
+# ---------------------------------------------------------------------------
+# Priority
+# ---------------------------------------------------------------------------
+
+class PrioritiesListView(LoginRequiredMixin, ListView):
+    ...
+
+# ---------------------------------------------------------------------------
+# Priority
+# ---------------------------------------------------------------------------
+
+class PrioritiesListView(LoginRequiredMixin, ListView):
+    model = Priority
+    context_object_name = "priorities"
+    template_name = "tasks/priorities_list.html"
+
+
+class PriorityCreateView(LoginRequiredMixin, CreateView):
+    model = Priority
+    form_class = PriorityForm
+    template_name = "tasks/add_priority.html"
+    success_url = reverse_lazy("priorities_list")
+
+
+class PriorityUpdateView(LoginRequiredMixin, UpdateView):
+    model = Priority
+    form_class = PriorityForm
+    template_name = "tasks/edit_priority.html"
+    context_object_name = "priority"
+    success_url = reverse_lazy("priorities_list")
+
+
+class PriorityDeleteView(LoginRequiredMixin, DeleteView):
+    model = Priority
+    template_name = "tasks/delete_priority.html"
+    context_object_name = "priority"
+    success_url = reverse_lazy("priorities_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task_count"] = Task.objects.filter(priority=self.object).count()
+        return context

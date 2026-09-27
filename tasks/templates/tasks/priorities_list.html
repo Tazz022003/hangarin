@@ -1,0 +1,85 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Priorities | Hangarin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Priorities</h1>
+        <p>Manage the priority levels used across your tasks.</p>
+    </div>
+
+    <a href="{% url 'add_priority' %}" class="add-task-button">
+        + Add Priority
+    </a>
+
+</div>
+
+
+<section class="category-grid">
+
+    {% for priority in priorities %}
+
+    <div class="category-card" style="display:flex; align-items:center; gap:0.75rem;">
+
+        <a
+            href="{% url 'tasks_list' %}?priority={{ priority.id }}"
+            style="display:flex; align-items:center; gap:1rem; flex:1; text-decoration:none; color:inherit;"
+        >
+
+            <span class="badge badge-{{ priority.name|lower }}" style="font-size:0.85rem; padding:0.4rem 0.8rem;">
+                {{ priority.name|title }}
+            </span>
+
+            <div class="category-info">
+
+                <h2>
+                    {{ priority.name|title }}
+                </h2>
+
+                <p>
+                    View tasks with this priority
+                </p>
+
+            </div>
+
+        </a>
+
+        <div style="display:flex; flex-direction:column; gap:0.25rem; white-space:nowrap; margin-left:0.5rem;">
+
+            <a
+                href="{% url 'edit_priority' priority.id %}"
+                style="color:#4f46e5; font-weight:600; text-decoration:none; font-size:0.9rem;"
+            >
+                Edit
+            </a>
+
+            <a
+                href="{% url 'delete_priority' priority.id %}"
+                style="color:#e53935; font-weight:600; text-decoration:none; font-size:0.9rem;"
+            >
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty-card">
+        <h3>No priorities yet</h3>
+        <p>Add your first priority level to get started.</p>
+
+        <a href="{% url 'add_priority' %}" class="submit-button">
+            Add Priority
+        </a>
+    </div>
+
+    {% endfor %}
+
+</section>
+
+{% endblock %}

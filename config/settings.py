@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     # Hangarin apps
     'tasks',
     'accounts',
+    'widget_tweaks'
 ]
 
 

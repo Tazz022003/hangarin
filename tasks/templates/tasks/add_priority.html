@@ -1,6 +1,6 @@
 {% extends "tasks/base.html" %}
 
-{% block title %}Edit Category | Hangarin{% endblock %}
+{% block title %}Add Priority | Hangarin{% endblock %}
 
 {% block content %}
 
@@ -8,13 +8,13 @@
 
     <div>
 
-        <a href="{% url 'categories_list' %}" class="back-link">
-            ← Back to Categories
+        <a href="{% url 'priorities_list' %}" class="back-link">
+            ← Back to Priorities
         </a>
 
-        <h1>Edit Category</h1>
+        <h1>Add Priority</h1>
 
-        <p>Update this category's name.</p>
+        <p>Create a new priority level for your tasks.</p>
 
     </div>
 
@@ -31,12 +31,12 @@
 
         <div class="form-actions">
 
-            <a href="{% url 'categories_list' %}" class="cancel-button">
+            <a href="{% url 'priorities_list' %}" class="cancel-button">
                 Cancel
             </a>
 
             <button type="submit" class="submit-button">
-                Save Changes
+                Add Priority
             </button>
 
         </div>

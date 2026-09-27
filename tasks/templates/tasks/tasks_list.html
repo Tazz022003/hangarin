@@ -61,6 +61,10 @@
             <input type="hidden" name="category" value="{{ current_category }}">
         {% endif %}
 
+        {% if current_priority %}
+            <input type="hidden" name="priority" value="{{ current_priority }}">
+        {% endif %}
+
         {% if current_sort %}
             <input type="hidden" name="sort_by" value="{{ current_sort }}">
         {% endif %}
@@ -89,6 +93,10 @@
 
         {% if current_category %}
             <input type="hidden" name="category" value="{{ current_category }}">
+        {% endif %}
+
+        {% if current_priority %}
+            <input type="hidden" name="priority" value="{{ current_priority }}">
         {% endif %}
 
         {% if query %}
@@ -178,60 +186,6 @@
 </section>
 
 
-{% if is_paginated %}
-
-{% comment %}
-    Every page link below repeats the current status/category/q/sort_by
-    so that navigating pages never loses the active search, sort or filter.
-{% endcomment %}
-
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.5rem;">
-
-    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-
-        {% if page_obj.number > 1 %}
-            <a href="?page=1{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">First</a>
-        {% else %}
-            <span class="filter-button" style="opacity:0.4;">First</span>
-        {% endif %}
-
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Prev</a>
-        {% else %}
-            <span class="filter-button" style="opacity:0.4;">Prev</span>
-        {% endif %}
-
-        {% for page_num in paginator.page_range %}
-
-            {% if page_num == page_obj.number %}
-                <span class="filter-button active">{{ page_num }}</span>
-
-            {% elif page_num > page_obj.number|add:"-3" and page_num < page_obj.number|add:"3" %}
-                <a href="?page={{ page_num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">{{ page_num }}</a>
-            {% endif %}
-
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Next</a>
-        {% else %}
-            <span class="filter-button" style="opacity:0.4;">Next</span>
-        {% endif %}
-
-        {% if page_obj.number != paginator.num_pages %}
-            <a href="?page={{ paginator.num_pages }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}" class="filter-button">Last</a>
-        {% else %}
-            <span class="filter-button" style="opacity:0.4;">Last</span>
-        {% endif %}
-
-    </div>
-
-    <div style="font-size:0.9rem; color:#666;">
-        Showing <strong>{{ tasks|length }}</strong> out of <strong>{{ paginator.count }}</strong> entries
-    </div>
-
-</div>
-
-{% endif %}
+{% include 'tasks/includes/pagination.html' %}
 
 {% endblock %}

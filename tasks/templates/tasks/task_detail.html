@@ -104,7 +104,7 @@
                 <h2>SubTasks</h2>
 
                 <span>
-                    {{ subtasks|length }}
+                    {{ subtasks.paginator.count }}
                 </span>
 
             </div>
@@ -118,6 +118,63 @@
             </a>
 
         </div>
+
+
+        {% if subtasks.paginator.count > 0 or subtask_query %}
+
+        <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem;">
+
+            <!-- Search form (own button) -->
+            <form method="get" style="display:flex; gap:0.5rem; flex:1; min-width:200px;">
+
+                {% if subtask_sort %}
+                    <input type="hidden" name="subtask_sort" value="{{ subtask_sort }}">
+                {% endif %}
+
+                <input
+                    type="text"
+                    name="subtask_q"
+                    value="{{ subtask_query }}"
+                    placeholder="Search subtasks..."
+                    style="flex:1; padding:0.5rem 0.9rem; border-radius:8px; border:1px solid #ddd;"
+                >
+
+                <button type="submit" class="submit-button">
+                    Search
+                </button>
+
+            </form>
+
+
+            <!-- Sort form (own button) -->
+            <form method="get" style="display:flex; gap:0.5rem; align-items:center;">
+
+                {% if subtask_query %}
+                    <input type="hidden" name="subtask_q" value="{{ subtask_query }}">
+                {% endif %}
+
+                <label for="subtask_sort" style="font-weight:600; font-size:0.9rem;">
+                    Sort by
+                </label>
+
+                <select
+                    id="subtask_sort"
+                    name="subtask_sort"
+                    style="padding:0.4rem 0.8rem; border-radius:8px; border:1px solid #ddd;"
+                >
+                    <option value="title" {% if subtask_sort == "title" %}selected{% endif %}>Title</option>
+                    <option value="status" {% if subtask_sort == "status" %}selected{% endif %}>Status</option>
+                </select>
+
+                <button type="submit" class="submit-button">
+                    Sort
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
 
 
         {% for subtask in subtasks %}
@@ -188,10 +245,63 @@
         {% empty %}
 
         <div class="empty-card">
-            No subtasks yet.
+            {% if subtask_query %}
+                No subtasks match "{{ subtask_query }}".
+            {% else %}
+                No subtasks yet.
+            {% endif %}
         </div>
 
         {% endfor %}
+
+
+        {% if subtasks.paginator.num_pages > 1 %}
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1rem;">
+
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+
+                {% if subtasks.number > 1 %}
+                    <a href="?subtask_page=1{% if subtask_sort %}&subtask_sort={{ subtask_sort }}{% endif %}{% if subtask_query %}&subtask_q={{ subtask_query }}{% endif %}" class="filter-button">First</a>
+                {% else %}
+                    <span class="filter-button" style="opacity:0.4;">First</span>
+                {% endif %}
+
+                {% if subtasks.has_previous %}
+                    <a href="?subtask_page={{ subtasks.previous_page_number }}{% if subtask_sort %}&subtask_sort={{ subtask_sort }}{% endif %}{% if subtask_query %}&subtask_q={{ subtask_query }}{% endif %}" class="filter-button">Prev</a>
+                {% else %}
+                    <span class="filter-button" style="opacity:0.4;">Prev</span>
+                {% endif %}
+
+                {% for page_num in subtasks.paginator.page_range %}
+                    {% if page_num == subtasks.number %}
+                        <span class="filter-button active">{{ page_num }}</span>
+                    {% elif page_num > subtasks.number|add:"-3" and page_num < subtasks.number|add:"3" %}
+                        <a href="?subtask_page={{ page_num }}{% if subtask_sort %}&subtask_sort={{ subtask_sort }}{% endif %}{% if subtask_query %}&subtask_q={{ subtask_query }}{% endif %}" class="filter-button">{{ page_num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if subtasks.has_next %}
+                    <a href="?subtask_page={{ subtasks.next_page_number }}{% if subtask_sort %}&subtask_sort={{ subtask_sort }}{% endif %}{% if subtask_query %}&subtask_q={{ subtask_query }}{% endif %}" class="filter-button">Next</a>
+                {% else %}
+                    <span class="filter-button" style="opacity:0.4;">Next</span>
+                {% endif %}
+
+                {% if subtasks.number != subtasks.paginator.num_pages %}
+                    <a href="?subtask_page={{ subtasks.paginator.num_pages }}{% if subtask_sort %}&subtask_sort={{ subtask_sort }}{% endif %}{% if subtask_query %}&subtask_q={{ subtask_query }}{% endif %}" class="filter-button">Last</a>
+                {% else %}
+                    <span class="filter-button" style="opacity:0.4;">Last</span>
+                {% endif %}
+
+            </div>
+
+            <div style="font-size:0.85rem; color:#666;">
+                Showing <strong>{{ subtasks|length }}</strong> out of <strong>{{ subtasks.paginator.count }}</strong> entries
+            </div>
+
+        </div>
+
+        {% endif %}
 
     </section>
 
@@ -223,9 +333,31 @@
 
         <div class="note-card">
 
-            <p>
-                {{ note.content }}
-            </p>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+
+                <p style="margin:0;">
+                    {{ note.content }}
+                </p>
+
+                <div class="subtask-actions" style="flex-shrink:0;">
+
+                    <a
+                        href="{% url 'edit_note' note.id %}"
+                        class="subtask-edit-button"
+                    >
+                        Edit
+                    </a>
+
+                    <a
+                        href="{% url 'delete_note' note.id %}"
+                        class="subtask-delete-button"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
 
             <small>
                 {{ note.created_at|date:"M d, Y · g:i A" }}

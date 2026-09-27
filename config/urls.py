@@ -9,8 +9,15 @@ from django.views.generic import RedirectView
 from accounts.views import signup
 from tasks.views import (
     CategoriesListView,
+    CategoryCreateView,
+    CategoryDeleteView,
+    CategoryUpdateView,
     DashboardView,
     NoteCreateView,
+    PrioritiesListView,
+    PriorityCreateView,
+    PriorityDeleteView,
+    PriorityUpdateView,
     ProfileView,
     SubTaskCreateView,
     SubTaskDeleteView,
@@ -21,9 +28,9 @@ from tasks.views import (
     TaskListView,
     TaskUpdateView,
     UpdateSubTaskStatusView,
-    CategoryCreateView, 
-    CategoryUpdateView, 
-    CategoryDeleteView
+    NoteUpdateView,
+    NoteDeleteView,
+
 )
 
 urlpatterns = [
@@ -46,8 +53,6 @@ urlpatterns = [
     path("tasks/<int:task_id>/", TaskDetailView.as_view(), name="task_detail"),
     path("tasks/<int:task_id>/edit/", TaskUpdateView.as_view(), name="edit_task"),
     path("tasks/<int:task_id>/delete/", TaskDeleteView.as_view(), name="delete_task"),
-
-    path("categories/", CategoriesListView.as_view(), name="categories_list"),
 
     path(
         "tasks/<int:task_id>/subtasks/add/",
@@ -72,12 +77,19 @@ urlpatterns = [
 
     path("tasks/<int:task_id>/notes/add/", NoteCreateView.as_view(), name="add_note"),
 
-    # Add to the imports at the top:
-# from tasks.views import CategoryCreateView, CategoryUpdateView, CategoryDeleteView
-
-# Add these to urlpatterns, near the existing categories_list path:
-
+    path("categories/", CategoriesListView.as_view(), name="categories_list"),
     path("categories/add/", CategoryCreateView.as_view(), name="add_category"),
     path("categories/<int:pk>/edit/", CategoryUpdateView.as_view(), name="edit_category"),
     path("categories/<int:pk>/delete/", CategoryDeleteView.as_view(), name="delete_category"),
-]
+
+    path("priorities/", PrioritiesListView.as_view(), name="priorities_list"),
+    path("priorities/add/", PriorityCreateView.as_view(), name="add_priority"),
+    path("priorities/<int:pk>/edit/", PriorityUpdateView.as_view(), name="edit_priority"),
+    path("priorities/<int:pk>/delete/", PriorityDeleteView.as_view(), name="delete_priority"),
+    # Add NoteUpdateView, NoteDeleteView to the tasks.views import list
+
+# Add these to urlpatterns, near the existing add_note path:
+
+    path("notes/<int:note_id>/edit/", NoteUpdateView.as_view(), name="edit_note"),
+    path("notes/<int:note_id>/delete/", NoteDeleteView.as_view(), name="delete_note"),
+]   

@@ -1,6 +1,6 @@
 {% extends "tasks/base.html" %}
 
-{% block title %}Edit Category | Hangarin{% endblock %}
+{% block title %}Edit Priority | Hangarin{% endblock %}
 
 {% block content %}
 
@@ -8,13 +8,13 @@
 
     <div>
 
-        <a href="{% url 'categories_list' %}" class="back-link">
-            ← Back to Categories
+        <a href="{% url 'priorities_list' %}" class="back-link">
+            ← Back to Priorities
         </a>
 
-        <h1>Edit Category</h1>
+        <h1>Edit Priority</h1>
 
-        <p>Update this category's name.</p>
+        <p>Update this priority's name.</p>
 
     </div>
 
@@ -31,7 +31,7 @@
 
         <div class="form-actions">
 
-            <a href="{% url 'categories_list' %}" class="cancel-button">
+            <a href="{% url 'priorities_list' %}" class="cancel-button">
                 Cancel
             </a>
 
