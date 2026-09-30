@@ -86,10 +86,10 @@ urlpatterns = [
     path("priorities/add/", PriorityCreateView.as_view(), name="add_priority"),
     path("priorities/<int:pk>/edit/", PriorityUpdateView.as_view(), name="edit_priority"),
     path("priorities/<int:pk>/delete/", PriorityDeleteView.as_view(), name="delete_priority"),
-    # Add NoteUpdateView, NoteDeleteView to the tasks.views import list
-
-# Add these to urlpatterns, near the existing add_note path:
+    #  NoteUpdateView, NoteDeleteView to the tasks.views import list
 
     path("notes/<int:note_id>/edit/", NoteUpdateView.as_view(), name="edit_note"),
     path("notes/<int:note_id>/delete/", NoteDeleteView.as_view(), name="delete_note"),
+
+    path('', include('pwa.urls')),
 ]   

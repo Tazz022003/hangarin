@@ -39,18 +39,6 @@ body {
 
 
 /* =========================
-   General App
-   ========================= */
-
-.app {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-}
-
-
-/* =========================
    App Shell
    ========================= */
 
@@ -1198,13 +1186,6 @@ body {
 
 @media (max-width: 700px) {
 
-    /* App */
-
-    .app {
-        padding: 20px 16px 90px;
-    }
-
-
     /* Sidebar */
 
     .sidebar {
@@ -1217,6 +1198,7 @@ body {
     .main-content {
         margin-left: 0;
         min-height: 100vh;
+        padding: 20px 16px calc(64px + 12px + 24px + env(safe-area-inset-bottom, 0px));
     }
 
 
@@ -1273,7 +1255,7 @@ body {
 
         left: 12px;
         right: 12px;
-        bottom: 12px;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
 
         height: 64px;
 
@@ -1512,6 +1494,35 @@ body {
     .delete-button,
     .cancel-button {
         width: 100%;
+    }
+
+}
+
+
+/* =========================
+   Bottom Nav — Very Narrow Screens
+   ========================= */
+
+@media (max-width: 400px) {
+
+    .bottom-nav {
+        left: 6px;
+        right: 6px;
+        height: 58px;
+    }
+
+    .nav-item {
+        font-size: 9.5px;
+    }
+
+    .nav-item .nav-icon {
+        font-size: 17px;
+        margin-bottom: 2px;
+    }
+
+    .nav-item .nav-icon svg {
+        width: 16px;
+        height: 16px;
     }
 
 }
