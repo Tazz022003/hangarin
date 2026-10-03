@@ -161,10 +161,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
@@ -194,6 +196,7 @@ ACCOUNT_SIGNUP_FIELDS = [
 ]
 
 
+
 # --- Progressive Web App Settings ---
 PWA_APP_NAME = 'Hangarin'
 PWA_APP_DESCRIPTION = "A Progressive Web App version of Hangarin, your task manager"
@@ -204,25 +207,31 @@ PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'portrait'
 PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
+
 PWA_APP_ICONS = [
     {
-        'src': '/static/tasks/img/icon-192.png',
+        'src': '/static/img/icon-192.png',
         'sizes': '192x192'
     },
     {
-        'src': '/static/tasks/img/icon-512.png',
+        'src': '/static/img/icon-512.png',
         'sizes': '512x512'
     }
 ]
+
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/tasks/img/icon-192.png',
+        'src': '/static/img/icon-192.png',
         'sizes': '192x192'
     },
     {
-        'src': '/static/tasks/img/icon-512.png',
+        'src': '/static/img/icon-512.png',
         'sizes': '512x512'
     }
 ]
+
 PWA_APP_DIR = 'ltr'
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'tasks/static/tasks/js', 'serviceworker.js')
+
+PWA_SERVICE_WORKER_PATH = os.path.join(
+    BASE_DIR, 'static', 'js', 'serviceworker.js'
+)
