@@ -1,3 +1,4 @@
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -9,25 +10,17 @@
 
     <title>{% block title %}Hangarin{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+   <link rel="stylesheet" href="{% static 'tasks/style.css' %}?v=7">
 </head>
 
 <body>
 
 <div class="app-shell">
 
-    <!-- =========================
-         Desktop Sidebar
-         ========================= -->
-
+    <!-- Desktop Sidebar -->
     <aside class="sidebar">
 
-
-
-        <!-- =========================
-             User Profile
-             ========================= -->
-
+        <!-- User Profile -->
         <details class="sidebar-profile">
 
             <summary class="sidebar-profile-trigger">
@@ -37,10 +30,7 @@
                 </div>
 
                 <div class="sidebar-profile-info">
-
-                    <strong>
-                        {{ request.user.username }}
-                    </strong>
+                    <strong>{{ request.user.username }}</strong>
 
                     <span>
                         {% if request.user.is_staff %}
@@ -49,11 +39,9 @@
                             User
                         {% endif %}
                     </span>
-
                 </div>
 
                 <span class="sidebar-profile-arrow">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -65,23 +53,19 @@
                     >
                         <path d="m6 9 6 6 6-6"></path>
                     </svg>
-
                 </span>
 
             </summary>
 
-
             <!-- Profile Menu -->
-
             <div class="sidebar-profile-menu">
 
+                <!-- My Profile -->
                 <a
                     href="{% url 'profile' %}"
                     class="sidebar-profile-menu-item"
                 >
-
                     <span class="sidebar-profile-menu-icon">
-
                         <svg
                             viewBox="0 0 24 24"
                             fill="none"
@@ -94,107 +78,69 @@
                             <circle cx="12" cy="8" r="4"></circle>
                             <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
                         </svg>
-
                     </span>
 
-                    <span>
-                        My Profile
-                    </span>
-
+                    <span>My Profile</span>
                 </a>
 
-
-               
-    <!-- Edit Profile -->
-
-               <a
-                   href="{% url 'profile' %}"
+                <!-- Edit Profile -->
+                <a
+                    href="{% url 'profile' %}"
                     class="sidebar-profile-menu-item"
                 >
-
                     <span class="sidebar-profile-menu-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
+                        </svg>
+                    </span>
 
-                           <svg
-                              viewBox="0 0 24 24"
-                               fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"
-                >
-                              <path d="M12 20h9"></path>
-                              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
-                             </svg>
-
-                             </span>
-
-                            <span>
-                              Edit Profile
-                            </span>
-
+                    <span>Edit Profile</span>
                 </a>
 
                 <!-- Settings -->
-
-               <a
-                   href="{% url 'profile' %}"
-                   class="sidebar-profile-menu-item"
+                <a
+                    href="{% url 'profile' %}"
+                    class="sidebar-profile-menu-item"
                 >
+                    <span class="sidebar-profile-menu-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2a1.7 1.7 0 0 0 1.5-1A1.7 1.7 0 0 0 7.7 8l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2H15v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"></path>
+                        </svg>
+                    </span>
 
-                 <span class="sidebar-profile-menu-icon">
-
-                   <svg
-                       viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                >
-                     <circle cx="12" cy="12" r="3"></circle>
-                     <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2a1.7 1.7 0 0 0 1.5-1A1.7 1.7 0 0 0 7.7 8l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2H15v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z">
-                     </path>
-               </svg>
-
-               </span>
-
-              <span>
-                  Settings
-              </span>
-
-            </a>
-
-                    </button>
-
-                </form>
+                    <span>Settings</span>
+                </a>
 
             </div>
-
         </details>
 
-
         <!-- Divider -->
-
         <div class="sidebar-divider"></div>
 
-
-        <!-- =========================
-             Main Navigation
-             ========================= -->
-
+        <!-- Main Navigation -->
         <nav class="sidebar-nav">
 
             <!-- Dashboard -->
-
-            <a
-                href="{% url 'dashboard' %}"
-                class="nav-link"
-            >
-
+            <a href="{% url 'dashboard' %}" class="nav-link">
                 <span class="nav-icon">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -208,25 +154,13 @@
                         <path d="M5 9.5V21h14V9.5"></path>
                         <path d="M9 21v-6h6v6"></path>
                     </svg>
-
                 </span>
-
-                <span>
-                    Dashboard
-                </span>
-
+                <span>Dashboard</span>
             </a>
 
-
             <!-- Tasks -->
-
-            <a
-                href="{% url 'tasks_list' %}"
-                class="nav-link"
-            >
-
+            <a href="{% url 'tasks_list' %}" class="nav-link">
                 <span class="nav-icon">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -241,25 +175,13 @@
                         <path d="M8 12h8"></path>
                         <path d="M8 16h5"></path>
                     </svg>
-
                 </span>
-
-                <span>
-                    Tasks
-                </span>
-
+                <span>Tasks</span>
             </a>
 
-
             <!-- Categories -->
-
-            <a
-                href="{% url 'categories_list' %}"
-                class="nav-link"
-            >
-
+            <a href="{% url 'categories_list' %}" class="nav-link">
                 <span class="nav-icon">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -274,25 +196,13 @@
                         <rect x="4" y="14" width="6" height="6" rx="1"></rect>
                         <rect x="14" y="14" width="6" height="6" rx="1"></rect>
                     </svg>
-
                 </span>
-
-                <span>
-                    Categories
-                </span>
-
+                <span>Categories</span>
             </a>
 
-
             <!-- Priorities -->
-
-            <a
-                href="{% url 'priorities_list' %}"
-                class="nav-link"
-            >
-
+            <a href="{% url 'priorities_list' %}" class="nav-link">
                 <span class="nav-icon">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -305,47 +215,46 @@
                         <path d="M4 21V4"></path>
                         <path d="M4 4h13l-2.5 4L17 12H4"></path>
                     </svg>
-
                 </span>
+                <span>Priorities</span>
+            </a>
 
-                <span>
-                    Priorities
+            <!-- Notes -->
+            <a href="{% url 'notes_list' %}" class="nav-link">
+                <span class="nav-icon">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6"></path>
+                        <path d="M8 13h8"></path>
+                        <path d="M8 17h8"></path>
+                    </svg>
                 </span>
-
+                <span>Notes</span>
             </a>
 
         </nav>
-
     </aside>
 
-
-    <!-- =========================
-         Main Content
-         ========================= -->
-
+    <!-- Main Content -->
     <main class="main-content">
-
         {% block content %}
         {% endblock %}
-
     </main>
 
-
-    <!-- =========================
-         Mobile Bottom Navigation
-         ========================= -->
-
+    <!-- Mobile Bottom Navigation -->
     <nav class="bottom-nav">
 
         <!-- Home -->
-
-        <a
-            href="{% url 'dashboard' %}"
-            class="nav-item"
-        >
-
+        <a href="{% url 'dashboard' %}" class="nav-item">
             <span class="nav-icon">
-
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -359,25 +268,13 @@
                     <path d="M5 9.5V21h14V9.5"></path>
                     <path d="M9 21v-6h6v6"></path>
                 </svg>
-
             </span>
-
-            <span>
-                Home
-            </span>
-
+            <span>Home</span>
         </a>
 
-
         <!-- Tasks -->
-
-        <a
-            href="{% url 'tasks_list' %}"
-            class="nav-item"
-        >
-
+        <a href="{% url 'tasks_list' %}" class="nav-item">
             <span class="nav-icon">
-
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -392,25 +289,13 @@
                     <path d="M8 12h8"></path>
                     <path d="M8 16h5"></path>
                 </svg>
-
             </span>
-
-            <span>
-                Tasks
-            </span>
-
+            <span>Tasks</span>
         </a>
 
-
         <!-- Categories -->
-
-        <a
-            href="{% url 'categories_list' %}"
-            class="nav-item"
-        >
-
+        <a href="{% url 'categories_list' %}" class="nav-item">
             <span class="nav-icon">
-
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -425,25 +310,13 @@
                     <rect x="4" y="14" width="6" height="6" rx="1"></rect>
                     <rect x="14" y="14" width="6" height="6" rx="1"></rect>
                 </svg>
-
             </span>
-
-            <span>
-                Categories
-            </span>
-
+            <span>Categories</span>
         </a>
 
-
         <!-- Priorities -->
-
-        <a
-            href="{% url 'priorities_list' %}"
-            class="nav-item"
-        >
-
+        <a href="{% url 'priorities_list' %}" class="nav-item">
             <span class="nav-icon">
-
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -456,25 +329,34 @@
                     <path d="M4 21V4"></path>
                     <path d="M4 4h13l-2.5 4L17 12H4"></path>
                 </svg>
-
             </span>
-
-            <span>
-                Priorities
-            </span>
-
+            <span>Priorities</span>
         </a>
 
+        <!-- Notes -->
+        <a href="{% url 'notes_list' %}" class="nav-item">
+            <span class="nav-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <path d="M14 2v6h6"></path>
+                    <path d="M8 13h8"></path>
+                    <path d="M8 17h8"></path>
+                </svg>
+            </span>
+            <span>Notes</span>
+        </a>
 
         <!-- Profile -->
-
-        <a
-            href="{% url 'profile' %}"
-            class="nav-item"
-        >
-
+        <a href="{% url 'profile' %}" class="nav-item">
             <span class="nav-icon">
-
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -487,13 +369,8 @@
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
                 </svg>
-
             </span>
-
-            <span>
-                Profile
-            </span>
-
+            <span>Profile</span>
         </a>
 
     </nav>
@@ -501,5 +378,4 @@
 </div>
 
 </body>
-
 </html>

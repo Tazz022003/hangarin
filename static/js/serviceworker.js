@@ -1,4 +1,4 @@
-const CACHE_NAME = "hangarin-cache-v1";
+const CACHE_NAME = "hangarin-cache-v2";
 
 const STATIC_ASSETS = [
     "/static/tasks/style.css",

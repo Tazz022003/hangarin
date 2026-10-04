@@ -1,0 +1,208 @@
+
+{% extends "tasks/base.html" %}
+
+{% block title %}My Notes | Hangarin{% endblock %}
+
+{% block content %}
+<div class="notes-page">
+    <section class="detail-section notes-section">
+
+        <div class="section-header">
+            <div class="section-title">
+                <h2>My Notes</h2>
+                <span>{{ total_notes|default:page_obj.paginator.count }}</span>
+            </div>
+
+            <a href="{% url 'add_standalone_note' %}"
+               class="add-subtask-button">
+                + Add Note
+            </a>
+        </div>
+
+        <p class="notes-form-description">
+            Keep your thoughts and task details in one place.
+        </p>
+
+        <div class="notes-toolbar">
+            <form method="get" class="notes-search-form">
+                <input type="text"
+                       name="q"
+                       value="{{ search_query|default:'' }}"
+                       placeholder="Search notes or task titles..."
+                       aria-label="Search notes or task titles">
+
+                <input type="hidden"
+                       name="sort"
+                       value="{{ sort_by|default:'newest' }}">
+
+                <button type="submit" class="submit-button">
+                    Search
+                </button>
+            </form>
+
+            <form method="get" class="notes-sort-form">
+                {% if search_query %}
+                    <input type="hidden"
+                           name="q"
+                           value="{{ search_query }}">
+                {% endif %}
+
+                <label for="notes-sort">Sort by</label>
+
+                <select id="notes-sort" name="sort">
+                    <option value="newest"
+                        {% if sort_by == "newest" %}selected{% endif %}>
+                        Newest
+                    </option>
+                    <option value="oldest"
+                        {% if sort_by == "oldest" %}selected{% endif %}>
+                        Oldest
+                    </option>
+                    <option value="task_az"
+                        {% if sort_by == "task_az" %}selected{% endif %}>
+                        Task A–Z
+                    </option>
+                    <option value="task_za"
+                        {% if sort_by == "task_za" %}selected{% endif %}>
+                        Task Z–A
+                    </option>
+                </select>
+
+                <button type="submit" class="submit-button">
+                    Sort
+                </button>
+            </form>
+        </div>
+
+        <div class="notes-list">
+            {% for note in notes %}
+                <article class="note-card notes-list-card">
+                    <div class="notes-card-main">
+                        <div class="notes-card-heading">
+                            <span class="notes-icon" aria-hidden="true">✎</span>
+
+                            <div class="notes-card-title">
+                                <h3>{{ note.task.title }}</h3>
+                                <small>{{ note.created_at|date:"M d, Y · g:i A" }}</small>
+                            </div>
+                        </div>
+
+                        <p class="notes-card-content">
+                            {{ note.content|linebreaksbr }}
+                        </p>
+                    </div>
+
+                    <div class="subtask-actions notes-actions">
+                        <a href="{% url 'task_detail' task_id=note.task.id %}"
+                           class="notes-view-button">
+                            View Task
+                        </a>
+
+                        <a href="{% url 'edit_note' note_id=note.id %}"
+                           class="subtask-edit-button">
+                            Edit
+                        </a>
+
+                        <a href="{% url 'delete_note' note_id=note.id %}"
+                           class="subtask-delete-button">
+                            Delete
+                        </a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-card notes-empty">
+                    <h3>
+                        {% if search_query %}
+                            No matching notes
+                        {% else %}
+                            No notes yet
+                        {% endif %}
+                    </h3>
+
+                    <p>
+                        {% if search_query %}
+                            Try another keyword or clear your search.
+                        {% else %}
+                            Add your first note and it will appear here.
+                        {% endif %}
+                    </p>
+
+                    {% if search_query %}
+                        <a href="{% url 'notes_list' %}"
+                           class="filter-button">
+                            Clear Search
+                        </a>
+                    {% else %}
+                        <a href="{% url 'add_standalone_note' %}"
+                           class="add-subtask-button">
+                            + Add Note
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}
+            <div class="notes-pagination">
+                <div class="notes-page-buttons">
+                    {% if page_obj.has_previous %}
+                        <a class="filter-button"
+                           href="?page=1&amp;q={{ search_query|urlencode }}&amp;sort={{ sort_by|urlencode }}">
+                            First
+                        </a>
+                        <a class="filter-button"
+                           href="?page={{ page_obj.previous_page_number }}&amp;q={{ search_query|urlencode }}&amp;sort={{ sort_by|urlencode }}">
+                            Prev
+                        </a>
+                    {% else %}
+                        <span class="filter-button notes-disabled">First</span>
+                        <span class="filter-button notes-disabled">Prev</span>
+                    {% endif %}
+
+                    {% for page_num in page_obj.paginator.page_range %}
+                        {% if page_num == page_obj.number %}
+                            <span class="filter-button active"
+                                  aria-current="page">
+                                {{ page_num }}
+                            </span>
+                        {% else %}
+                            <a class="filter-button"
+                               href="?page={{ page_num }}&amp;q={{ search_query|urlencode }}&amp;sort={{ sort_by|urlencode }}"
+                               aria-label="Go to page {{ page_num }}">
+                                {{ page_num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="filter-button"
+                           href="?page={{ page_obj.next_page_number }}&amp;q={{ search_query|urlencode }}&amp;sort={{ sort_by|urlencode }}">
+                            Next
+                        </a>
+                        <a class="filter-button"
+                           href="?page={{ page_obj.paginator.num_pages }}&amp;q={{ search_query|urlencode }}&amp;sort={{ sort_by|urlencode }}">
+                            Last
+                        </a>
+                    {% else %}
+                        <span class="filter-button notes-disabled">Next</span>
+                        <span class="filter-button notes-disabled">Last</span>
+                    {% endif %}
+                </div>
+
+                <div class="notes-entry-count">
+                    {% if page_obj.paginator.count > 0 %}
+                        Showing
+                        <strong>{{ page_obj.start_index }}–{{ page_obj.end_index }}</strong>
+                        out of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                        entries
+                    {% else %}
+                        No entries found
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+    </section>
+</div>
+{% endblock %}

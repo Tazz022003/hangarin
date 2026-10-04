@@ -1,3 +1,4 @@
+
 {% extends "tasks/base.html" %}
 
 {% block title %}Tasks | Hangarin{% endblock %}
@@ -5,6 +6,7 @@
 {% block content %}
 
 <div class="page-header">
+
     <div>
         <h1>All Tasks</h1>
         <p>Manage everything you need to get done.</p>
@@ -13,8 +15,11 @@
     <a href="{% url 'add_task' %}" class="add-task-button">
         + Add Task
     </a>
+
 </div>
 
+
+<!-- Task Status Filters -->
 <div class="task-filters">
 
     <a
@@ -48,9 +53,10 @@
 </div>
 
 
+<!-- Search and Sort -->
 <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin:1rem 0;">
 
-    <!-- Search form (own button) -->
+    <!-- Search Form -->
     <form method="get" style="display:flex; gap:0.5rem; flex:1; min-width:220px;">
 
         {% if current_status %}
@@ -84,7 +90,7 @@
     </form>
 
 
-    <!-- Sort form (own button) -->
+    <!-- Sort Form -->
     <form method="get" style="display:flex; gap:0.5rem; align-items:center;">
 
         {% if current_status %}
@@ -103,18 +109,34 @@
             <input type="hidden" name="q" value="{{ query }}">
         {% endif %}
 
-        <label for="sort_by" style="font-weight:600;">Sort by</label>
+        <label for="sort_by" style="font-weight:600;">
+            Sort by
+        </label>
 
         <select
             id="sort_by"
             name="sort_by"
             style="padding:0.6rem 1rem; border-radius:8px; border:1px solid #ddd;"
         >
-            <option value="deadline" {% if current_sort == "deadline" %}selected{% endif %}>Deadline</option>
-            <option value="title" {% if current_sort == "title" %}selected{% endif %}>Title</option>
-            <option value="status" {% if current_sort == "status" %}selected{% endif %}>Status</option>
-            <option value="priority__name" {% if current_sort == "priority__name" %}selected{% endif %}>Priority</option>
-            <option value="category__name" {% if current_sort == "category__name" %}selected{% endif %}>Category</option>
+            <option value="deadline" {% if current_sort == "deadline" %}selected{% endif %}>
+                Deadline
+            </option>
+
+            <option value="title" {% if current_sort == "title" %}selected{% endif %}>
+                Title
+            </option>
+
+            <option value="status" {% if current_sort == "status" %}selected{% endif %}>
+                Status
+            </option>
+
+            <option value="priority__name" {% if current_sort == "priority__name" %}selected{% endif %}>
+                Priority
+            </option>
+
+            <option value="category__name" {% if current_sort == "category__name" %}selected{% endif %}>
+                Category
+            </option>
         </select>
 
         <button type="submit" class="submit-button">
@@ -126,22 +148,31 @@
 </div>
 
 
+<!-- Task Cards -->
 <section class="task-list-page">
 
     {% for task in tasks %}
 
-    <a href="{% url 'task_detail' task.id %}" class="task-card task-link">
+    <div class="task-card">
 
+        <!-- Task Title and Priority -->
         <div class="task-card-top">
 
             <div>
+
                 <h3 class="task-title">
-                    {{ task.title }}
+                    <a
+                        href="{% url 'task_detail' task.id %}"
+                        style="color:inherit; text-decoration:none;"
+                    >
+                        {{ task.title }}
+                    </a>
                 </h3>
 
                 <p class="task-description">
                     {{ task.description }}
                 </p>
+
             </div>
 
             <span class="badge badge-{{ task.priority.name|lower }}">
@@ -150,6 +181,8 @@
 
         </div>
 
+
+        <!-- Task Information -->
         <div class="task-meta">
 
             <span class="status-badge">
@@ -158,7 +191,9 @@
 
             <span>•</span>
 
-            <span>{{ task.category.name }}</span>
+            <span>
+                {{ task.category.name }}
+            </span>
 
             <span>•</span>
 
@@ -168,17 +203,42 @@
 
         </div>
 
-    </a>
+
+        <!-- Edit and Delete Buttons -->
+        <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1rem;">
+
+            <a
+                href="{% url 'edit_task' task.id %}"
+                class="edit-button"
+            >
+                Edit
+            </a>
+
+            <a
+                href="{% url 'delete_task' task.id %}"
+                class="subtask-delete-button"
+            >
+                Delete
+            </a>
+
+        </div>
+
+    </div>
 
     {% empty %}
 
     <div class="empty-card">
+
         <h3>No tasks found</h3>
-        <p>Try a different search or add a new task.</p>
+
+        <p>
+            Try a different search or add a new task.
+        </p>
 
         <a href="{% url 'add_task' %}" class="submit-button">
             Add Task
         </a>
+
     </div>
 
     {% endfor %}
@@ -186,6 +246,7 @@
 </section>
 
 
+<!-- Pagination -->
 {% include 'tasks/includes/pagination.html' %}
 
 {% endblock %}

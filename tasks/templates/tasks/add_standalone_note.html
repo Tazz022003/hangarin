@@ -1,0 +1,80 @@
+
+{% extends "tasks/base.html" %}
+
+{% block title %}Add Note | Hangarin{% endblock %}
+
+{% block content %}
+<div class="standalone-note-page">
+
+    <a href="{% url 'notes_list' %}" class="back-link">
+        <span aria-hidden="true">←</span> Back to Notes
+    </a>
+
+    <div class="standalone-note-card">
+
+        <div class="standalone-note-heading">
+            <div class="standalone-note-icon" aria-hidden="true">✎</div>
+            <div>
+                <h1>Create a note</h1>
+                <p>Capture an idea, reminder, or thought before you forget it.</p>
+            </div>
+        </div>
+
+        <div class="standalone-note-divider"></div>
+
+        <form method="post" class="standalone-note-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="note-form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="note-form-field">
+                <label for="{{ form.task.id_for_label }}">
+                    Related task
+                    <span class="optional-label">Choose a task</span>
+                </label>
+
+                {{ form.task }}
+
+                {% if form.task.errors %}
+                    <div class="note-field-error">
+                        {{ form.task.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="note-form-field">
+                <label for="{{ form.content.id_for_label }}">
+                    Note content
+                </label>
+
+                {{ form.content }}
+
+                {% if form.content.errors %}
+                    <div class="note-field-error">
+                        {{ form.content.errors }}
+                    </div>
+                {% endif %}
+
+                <small class="note-field-hint">
+                    Write down anything you want to remember.
+                </small>
+            </div>
+
+            <div class="standalone-note-actions">
+                <a href="{% url 'notes_list' %}" class="note-cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit" class="note-save-button">
+                    Save note <span aria-hidden="true">→</span>
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

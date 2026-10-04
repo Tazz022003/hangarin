@@ -307,8 +307,53 @@ class NoteDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("task_detail", kwargs={"task_id": self.object.task.id})
+    
+    
 
 
+# Standalone Notes List
+class NotesListView(LoginRequiredMixin, ListView):
+    model = Note
+    context_object_name = "notes"
+    template_name = "tasks/notes_list.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Note.objects.select_related("task")
+
+        self.search_query = self.request.GET.get("q", "").strip()
+        self.sort_by = self.request.GET.get("sort", "newest")
+
+        if self.search_query:
+            queryset = queryset.filter(
+                Q(content__icontains=self.search_query)
+                | Q(task__title__icontains=self.search_query)
+            )
+
+        sort_options = {
+            "newest": "-created_at",
+            "oldest": "created_at",
+            "task_az": "task__title",
+            "task_za": "-task__title",
+        }
+
+        return queryset.order_by(
+            sort_options.get(self.sort_by, "-created_at")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_query"] = self.search_query
+        context["sort_by"] = self.sort_by
+        context["total_notes"] = self.get_queryset().count()
+        return context
+    
+    # Create a note from the standalone Notes page
+class StandaloneNoteCreateView(LoginRequiredMixin, CreateView):
+    model = Note
+    fields = ["task", "content"]
+    template_name = "tasks/add_standalone_note.html"
+    success_url = reverse_lazy("notes_list")
 # ---------------------------------------------------------------------------
 # Profile
 # ---------------------------------------------------------------------------

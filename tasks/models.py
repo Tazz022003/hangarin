@@ -70,17 +70,16 @@ class Note(BaseModel):
         return self.content[:50]
 
 
+
 class SubTask(BaseModel):
-    parent_task = models.ForeignKey(
-        Task,
-        on_delete=models.CASCADE,
-    )
+    parent_task = models.ForeignKey(Task, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     status = models.CharField(
         max_length=50,
         choices=Task.STATUS_CHOICES,
-        default="Pending",
+        default="Pending"
     )
+    deadline = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.title

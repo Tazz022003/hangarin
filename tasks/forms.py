@@ -15,11 +15,20 @@ class TaskForm(forms.ModelForm):
         }
 
 
+
 class SubTaskForm(forms.ModelForm):
+
     class Meta:
         model = SubTask
-        fields = ["title", "status"]
-
+        fields = ["title", "status", "deadline"]
+        widgets = {
+            "deadline": forms.DateTimeInput(
+                format="%Y-%m-%dT%H:%M",
+                attrs={
+                    "type": "datetime-local",
+                },
+            ),
+        }
 
 class NoteForm(forms.ModelForm):
     class Meta:
@@ -36,3 +45,4 @@ class PriorityForm(forms.ModelForm):
     class Meta:
         model = Priority
         fields = ["name"]
+

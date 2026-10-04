@@ -14,6 +14,8 @@ from tasks.views import (
     CategoryUpdateView,
     DashboardView,
     NoteCreateView,
+    NotesListView,
+    StandaloneNoteCreateView,
     PrioritiesListView,
     PriorityCreateView,
     PriorityDeleteView,
@@ -75,6 +77,13 @@ urlpatterns = [
         name="update_subtask_status",
     ),
 
+    path(
+    "notes/add/",
+    StandaloneNoteCreateView.as_view(),
+    name="add_standalone_note",
+),
+path("notes/", NotesListView.as_view(), name="notes_list"),
+
     path("tasks/<int:task_id>/notes/add/", NoteCreateView.as_view(), name="add_note"),
 
     path("categories/", CategoriesListView.as_view(), name="categories_list"),
@@ -88,6 +97,7 @@ urlpatterns = [
     path("priorities/<int:pk>/delete/", PriorityDeleteView.as_view(), name="delete_priority"),
     #  NoteUpdateView, NoteDeleteView to the tasks.views import list
 
+    path("notes/", NotesListView.as_view(), name="notes_list"),
     path("notes/<int:note_id>/edit/", NoteUpdateView.as_view(), name="edit_note"),
     path("notes/<int:note_id>/delete/", NoteDeleteView.as_view(), name="delete_note"),
 
