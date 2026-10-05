@@ -4654,3 +4654,100 @@ input[placeholder="Search tasks..."]:focus {
         width: 100%;
     }
 }
+/* =========================
+   COMPACT SIGNUP PAGE
+   ========================= */
+
+.login-page {
+    min-height: 100vh;
+    padding: 16px;
+}
+
+.login-card {
+    max-width: 420px;
+    padding: 24px 30px;
+    border-radius: 20px;
+}
+
+.login-brand {
+    margin-bottom: 20px;
+}
+
+.login-brand .brand-icon {
+    margin-bottom: 8px;
+}
+
+.login-brand h1 {
+    font-size: 25px;
+}
+
+.login-brand p {
+    margin-top: 2px;
+    font-size: 13px;
+}
+
+.login-card form {
+    gap: 12px;
+}
+
+.login-card .form-group {
+    margin: 0;
+}
+
+.login-card .form-group label {
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.login-card input {
+    min-height: 42px;
+    padding: 9px 12px;
+}
+
+.login-card .form-help {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.login-card .submit-button {
+    min-height: 42px;
+    margin-top: 2px;
+}
+
+.login-footer {
+    margin-top: 12px;
+}
+
+.login-footer p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.login-divider {
+    margin: 14px 0;
+}
+
+.social-login {
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.social-button {
+    min-height: 42px;
+    padding: 9px 14px;
+}
+
+@media (max-width: 480px) {
+
+    .login-page {
+        padding: 12px;
+    }
+
+    .login-card {
+        padding: 22px 20px;
+        border-radius: 18px;
+    }
+
+}
